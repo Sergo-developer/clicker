@@ -18,14 +18,43 @@
         </div>
         
         <div class="ShopBase">
-                <button id="hoeModEvent">Hoe <span id="hoePrice"></span></button>
-            </div>
+                <div class="UpgradeWrapper">
+                <div class="ShopElem Phase1" id="hoeModEvent">
+                    <div id="hoeImageId" class="ShopImageText HoeImage">+<span id="hoePotatoPerSec"></span></div>
+                    <div>Мотыга</div>
+                    <div class="ShopLable"><h3>Цена</h3><span id="hoePrice"></span></div>
+                    <div class="ShopLable"><h3>Количество</h3><span id="totalHoes"></span></div>
+                </div>
+                    <div id="hoeUpgrade" class="Upgrade ShopImageText UpgradeIron"><span id="HoeUpgradePrice"></span>к</div>
+                </div>
+
+                <div class="UpgradeWrapper">
+                <div class="ShopElem Phase1" id="farmModEvent">
+                    <div id="farmImageId" class="ShopImageText FarmImage">+10</div>
+                    <div>Ферма</div>
+                    <div class="ShopLable"><h3>Цена</h3><span id="farmPrice"></span></div>
+                    <div class="ShopLable"><h3>Количество</h3><span id="totalFarms"></span></div>
+                </div>
+                    <div id="" class="Upgrade ShopImageText UpgradeIron">10к</div>
+                </div>
+            
         
     </body>
     <script>
         let points = 0;
         let addInSecond = 0;
+        
+        let hoePhaseStyle = document.querySelector('#hoeModEvent');
+        let hoeImageStyle = document.querySelector('#hoeImageId');
+        let UpgradeImageHoe = document.querySelector('#hoeUpgrade');
         let hoePrice = 15;
+        let totalHoes = 0;
+        let hoePotatoPerSec = 1;
+        let hoePhase = 0;
+        let HoeUpgradePrice = 1;
+        
+        let farmPrice = 100;
+        let totalFarms = 0;
         
      window.onload = function()
     {
@@ -33,7 +62,18 @@
         document.getElementById("addInSecond").innerHTML = addInSecond;
         document.getElementById("hoePrice").innerHTML = hoePrice;
         document.getElementById("addOnClickPoints").onclick = addOnClickPoints;
+         
         document.getElementById("hoeModEvent").onclick = hoeModEvent;
+        document.getElementById("totalHoes").innerHTML = totalHoes;
+        document.getElementById("hoePotatoPerSec").innerHTML = hoePotatoPerSec;
+        document.getElementById("HoeUpgradePrice").innerHTML = HoeUpgradePrice;
+        document.getElementById("hoeUpgrade").onclick = hoeUpgrade; 
+
+        document.getElementById("totalFarms").innerHTML = totalFarms;
+        document.getElementById("farmModEvent").onclick = farmModEvent;
+        document.getElementById("farmPrice").innerHTML = farmPrice;
+        
+         
         
     }
     
@@ -41,6 +81,7 @@
         
 function addOnClickPoints()
 {
+    
     if(points == 0)
     {
         points = 1
@@ -57,20 +98,85 @@ function hoeModEvent(){
     if(points >= hoePrice)
     {
         points = points - hoePrice;
-        hoePrice = hoePrice + 2;
-        addInSecond++;
+        hoePrice = hoePrice + 5;
+        addInSecond = addInSecond + hoePotatoPerSec;
+        totalHoes++;
+        document.getElementById("totalHoes").innerHTML = totalHoes;
+        document.getElementById("points").innerHTML = points;
         document.getElementById("hoePrice").innerHTML = hoePrice;
         document.getElementById("addInSecond").innerHTML = addInSecond;
     setInterval(function()
         {
-    points++;
+    points = points + hoePotatoPerSec;
     
     document.getElementById("points").innerHTML = points;
         },1000)
     }
-    
 }
-        
 
+function hoeUpgrade(){
+    
+    if(hoePhase === 1){
+        if(points >= 10000){
+
+            points = points - 10000;
+
+    hoePhaseStyle.setAttribute('class', 'ShopElem Phase3')
+    hoeImageStyle.setAttribute('class', 'ShopImageText HoeImage3')
+    UpgradeImageHoe.setAttribute('class', 'Upgrade ShopImageText UpgradeLast')
+            
+    hoePotatoPerSec = 4;
+    addInSecond = addInSecond + totalHoes * 2;
+    hoePhase = 2;
+    HoeUpgradePrice = 0;
+
+    document.getElementById("HoeUpgradePrice").innerHTML = HoeUpgradePrice;
+    document.getElementById("hoePotatoPerSec").innerHTML = hoePotatoPerSec;
+    document.getElementById("addInSecond").innerHTML = addInSecond;
+        }
+    }
+
+    // тут типа 1 апгрейд
+    if(hoePhase === 0){ 
+    if(points >= 1000){
+
+    points = points - 1000;
+
+    hoePhaseStyle.setAttribute('class', 'ShopElem Phase2')
+    hoeImageStyle.setAttribute('class', 'ShopImageText HoeImage2')
+    UpgradeImageHoe.setAttribute('class', 'Upgrade ShopImageText UpgradeDiamond')
+
+    hoePotatoPerSec = 2;
+    addInSecond = addInSecond + totalHoes;
+    hoePhase = 1;
+    HoeUpgradePrice = 10;
+    
+    document.getElementById("HoeUpgradePrice").innerHTML = HoeUpgradePrice;
+    document.getElementById("hoePotatoPerSec").innerHTML = hoePotatoPerSec;
+    document.getElementById("addInSecond").innerHTML = addInSecond;
+    }
+    }
+}
+
+function farmModEvent(){
+    
+    if(points >= farmPrice)
+    {
+        points = points - farmPrice;
+        farmPrice = farmPrice + 25;
+        addInSecond = addInSecond + 10;
+        totalFarms++;
+        document.getElementById("totalFarms").innerHTML = totalFarms;
+        document.getElementById("points").innerHTML = points;
+        document.getElementById("farmPrice").innerHTML = farmPrice;
+        document.getElementById("addInSecond").innerHTML = addInSecond;
+    setInterval(function()
+        {
+    points = points + 10;
+    
+    document.getElementById("points").innerHTML = points;
+        },1000)
+    }   
+}
     </script>
 </html>
