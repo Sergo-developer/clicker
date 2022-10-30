@@ -1,0 +1,76 @@
+<! DOCTYPE html>
+<html>
+    
+    <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="style.css">
+    </head>
+    
+    <body>
+        <div class="PoitnsBase"><h1> Катртошка <span id="points"></span></h1></div><div class="PoitnsBase"><h1> Картошка/сек <span id="addInSecond"></span></h1></div>
+        <div class="ClickerBase">
+        
+            <div class="ClickerCore">
+            
+        <div class="MainImage" id="addOnClickPoints" ></div>
+            </div>
+            
+        </div>
+        
+        <div class="ShopBase">
+                <button id="hoeModEvent">Hoe <span id="hoePrice"></span></button>
+            </div>
+        
+    </body>
+    <script>
+        let points = 0;
+        let addInSecond = 0;
+        let hoePrice = 15;
+        
+     window.onload = function()
+    {
+        document.getElementById("points").innerHTML = points;
+        document.getElementById("addInSecond").innerHTML = addInSecond;
+        document.getElementById("hoePrice").innerHTML = hoePrice;
+        document.getElementById("addOnClickPoints").onclick = addOnClickPoints;
+        document.getElementById("hoeModEvent").onclick = hoeModEvent;
+        
+    }
+    
+        
+        
+function addOnClickPoints()
+{
+    if(points == 0)
+    {
+        points = 1
+    }
+    else
+    {
+        points++ ;
+    }
+    
+    document.getElementById("points").innerHTML = points;
+}
+function hoeModEvent(){
+    
+    if(points >= hoePrice)
+    {
+        points = points - hoePrice;
+        hoePrice = hoePrice + 2;
+        addInSecond++;
+        document.getElementById("hoePrice").innerHTML = hoePrice;
+        document.getElementById("addInSecond").innerHTML = addInSecond;
+    setInterval(function()
+        {
+    points++;
+    
+    document.getElementById("points").innerHTML = points;
+        },1000)
+    }
+    
+}
+        
+
+    </script>
+</html>

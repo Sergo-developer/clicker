@@ -1,0 +1,38 @@
+.MainImage{
+    width: 228px;
+    height: 190px;
+    background: url(img/potato.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    transition-duration: 0.5s;
+    cursor: pointer;
+}
+
+.MainImage:hover{
+    width: 248px;
+    height: 210px;
+    transition-duration: 0.5s;
+}
+
+.ClickerBase {
+    display: flex;
+    width: auto;
+    align-content: space-between;
+    margin-bottom: 20px;
+}
+
+.ClickerCore {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.ShopBase {
+    background-color:;
+}
+
+.PointsBase{
+    height: auto;
+    text-align: center;
+    
+}
