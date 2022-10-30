@@ -1,3 +1,22 @@
+@font-face{
+    font-family: "MinecraftRus";
+    src: url(font/minecraft.ttf)
+}
+
+body{
+   background-image: url(img/dirt.png);
+    font-family: MinecraftRus;
+}
+
+h1{
+    user-select: none;
+    color: white;
+    text-shadow: black 0 0 10px;
+}
+h3{
+    font-size: 20;
+}
+
 .MainImage{
     width: 228px;
     height: 190px;
@@ -18,6 +37,7 @@
 .ClickerBase {
     display: flex;
     width: auto;
+    max-height: 190px;
     align-content: space-between;
     margin-bottom: 20px;
 }
@@ -27,12 +47,89 @@
     margin-right: auto;
 }
 
-.ShopBase {
-    background-color:;
+.ShopBase{
+    padding-top: 10%;
+    display: grid;
+    gap: 10px; 
+}
+
+.UpgradeWrapper{
+    display: inline-flex;
 }
 
 .PointsBase{
+    user-select: none;
     height: auto;
     text-align: center;
-    
+}
+.ShopElem{
+    user-select: none;
+    border: 5px solid;
+    border-color: #584d3b; 
+    width: 75%;
+    cursor: pointer;
+    vertical-align: middle;
+    display: grid;
+    grid-template-areas: "a b c d";
+    align-items: center;
+    font-size: 30;
+}
+
+.ShopImageText{
+    color: rgb(153, 255, 0);
+    text-shadow: black 0 0 10px;
+    font-size: 20;
+    user-select: none;
+}
+
+.ShopLable{
+    display: grid;
+    text-align: center;
+}
+.Phase1{
+    background-image: url(img/stripped_oak_log.png)
+}
+.Phase2{
+    background-image: url(img/iron_block.png);
+}
+
+.Phase3{
+    background-image: url(img/diamond_block.png);
+}
+
+.HoeImage{
+    background-image: url(img/wooden_hoe.png);
+    height: 100px;
+    width: 100px;
+}
+.HoeImage2{
+    background-image: url(img/iron_hoe.png);
+    height: 100px;
+    width: 100px;
+}
+.HoeImage3{
+    background-image: url(img/diamond_hoe.png);
+    height: 100px;
+    width: 100px;
+}
+.FarmImage{
+    background-image: url(img/farm.png);
+    height: 100px;
+    width: 100px;
+}
+.Upgrade{
+    border: 5px solid;
+    border-color: #584d3b; 
+    height: 100px;
+    width: 100px;
+    cursor: pointer;
+}
+.UpgradeIron{
+    background-image: url(img/Iron_upgrade.png);
+}
+.UpgradeDiamond{
+    background-image: url(img/diamond_upgrade.png);
+}
+.UpgradeLast{
+    background-image: url(img/last_upgrade.png);
 }
