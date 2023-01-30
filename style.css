@@ -57,8 +57,7 @@ h3{
     display: grid;
     gap: 10px; 
     background-image: url(img/spruce_planks.png);
-    margin-left: -9px;
-    width: 101%;
+    width: 100%;
 }
 
 .UpgradeWrapper{
