@@ -1,15 +1,16 @@
-<! DOCTYPE html>
+<!DOCTYPE html>
 <html>
     
     <head>
     <meta charset="utf-8">
     <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" sizes="16x16" href="img/potato.png">
+    <title>Картошка)</title>
     </head>
     
     <body>
-        <div class="PoitnsBase"><h1> Катртошка <span id="points"></span></h1></div><div class="PoitnsBase"><h1> Картошка/сек <span id="addInSecond"></span></h1></div>
+        <div class="PoitnsBase"><h1> Катртошка <span id="points"></span></h1></div><div class="PoitnsBase"><h1> Картошка / сек <span id="addInSecond"></span></h1></div>
         <div class="ClickerBase">
-        
             <div class="ClickerCore">
             
         <div class="MainImage" id="addOnClickPoints" ></div>
@@ -18,10 +19,16 @@
         </div>
         
         <div class="ShopBase">
+            <div class="ClickPoints"><span id="potatoClick"></span> / клик</div>
+                <div class="UpgradeWrapper">
+                <div id="clickerMod1" class="Upgrade ShopImageText Clicker1_Phase0"><span id="Clicker1Value"></span></div>
+                <div id="clickerMod2" class="Upgrade ShopImageText Clicker2_Phase0"><span id="Clicker2Value"></span></div>
+                <div id="clickerMod3" class="Upgrade ShopImageText Clicker3_Phase0"><span id="Clicker3Value"></span></div>
+                </div>
                 <div class="UpgradeWrapper">
                 <div class="ShopElem Phase1" id="hoeModEvent">
                     <div id="hoeImageId" class="ShopImageText HoeImage">+<span id="hoePotatoPerSec"></span></div>
-                    <div>Мотыга</div>
+                    <div><h3>Мотыга</h3></div>
                     <div class="ShopLable"><h3>Цена</h3><span id="hoePrice"></span></div>
                     <div class="ShopLable"><h3>Количество</h3><span id="totalHoes"></span></div>
                 </div>
@@ -30,19 +37,53 @@
 
                 <div class="UpgradeWrapper">
                 <div class="ShopElem Phase1" id="farmModEvent">
-                    <div id="farmImageId" class="ShopImageText FarmImage">+10</div>
-                    <div>Ферма</div>
+                    <div id="farmImageId" class="ShopImageText FarmImage">+<span id="farmPotatoPerSec"></span></div>
+                    <div><h3>Ферма</h3></div>
                     <div class="ShopLable"><h3>Цена</h3><span id="farmPrice"></span></div>
                     <div class="ShopLable"><h3>Количество</h3><span id="totalFarms"></span></div>
                 </div>
-                    <div id="" class="Upgrade ShopImageText UpgradeIron">10к</div>
+                    <div id="farmUpgrade" class="Upgrade ShopImageText UpgradeIron"><span id="farmUpgradePrice"></span>к</div>
                 </div>
+
+                <div class="UpgradeWrapper">
+                    <div class="ShopElem Phase1" id="vModEvent">
+                        <div id="vImageId" class="ShopImageText vImage">+<span id="vPotatoPerSec"></span></div>
+                        <div><h3>Виталик</h3></div>
+                        <div class="ShopLable"><h3>Цена</h3><span id="vPrice"></span></div>
+                        <div class="ShopLable"><h3>Количество</h3><span id="totalV"></span></div>
+                    </div>
+                        <div id="vUpgrade" class="Upgrade ShopImageText UpgradeIron"><span id="vUpgradePrice"></span>к</div>
+                    </div>
             
         
     </body>
     <script>
         let points = 0;
+        let potatoClick = 1;
         let addInSecond = 0;
+
+        let Clicker1Value = " ";
+        let Clicker2Value = " ";
+        let Clicker3Value = " ";
+
+        let Clicker1ModPhase = document.querySelector('#clickerMod1')
+        let Clicker2ModPhase = document.querySelector('#clickerMod2')
+        let Clicker3ModPhase = document.querySelector('#clickerMod3')
+
+        let Clicker1Phase = 0;
+        let Clicker2Phase = 0;
+        let Clicker3Phase = 0;
+
+        let potato_sound_1 = new Audio()
+        let potato_sound_2 = new Audio()
+        let potato_sound_3 = new Audio()
+        let upgrade_sound_1 = new Audio()
+        let upgrade_sound_2 = new Audio()
+        let buy_sound = new Audio()
+
+        function getRandomInt() {
+            return Math.floor(Math.random() * 2);
+        }
         
         let hoePhaseStyle = document.querySelector('#hoeModEvent');
         let hoeImageStyle = document.querySelector('#hoeImageId');
@@ -53,13 +94,31 @@
         let hoePhase = 0;
         let HoeUpgradePrice = 1;
         
+        let farmPhaseStyle = document.querySelector('#farmModEvent');
+        let farmImageStyle = document.querySelector('#farmImageId');
+        let UpgradeImageFarm = document.querySelector('#farmUpgrade');
         let farmPrice = 100;
         let totalFarms = 0;
+        let farmPotatoPerSec = 10;
+        let farmPhase = 0;
+        let farmUpgradePrice = 10;
+
+        let vPhaseStyle = document.querySelector('#vModEvent');
+        let vImageStyle = document.querySelector('#vImageId');
+        let UpgradeImageV = document.querySelector('#vUpgrade');
+        let vPrice = 1000;
+        let totalV = 0;
+        let vPotatoPerSec = 100;
+        let vPhase = 0;
+        let vUpgradePrice = 100;
         
      window.onload = function()
     {
         document.getElementById("points").innerHTML = points;
         document.getElementById("addInSecond").innerHTML = addInSecond;
+        document.getElementById("potatoClick").innerHTML = potatoClick;
+        document.getElementById("Clicker1Value").innerHTML = Clicker1Value;
+
         document.getElementById("hoePrice").innerHTML = hoePrice;
         document.getElementById("addOnClickPoints").onclick = addOnClickPoints;
          
@@ -72,8 +131,16 @@
         document.getElementById("totalFarms").innerHTML = totalFarms;
         document.getElementById("farmModEvent").onclick = farmModEvent;
         document.getElementById("farmPrice").innerHTML = farmPrice;
-        
+        document.getElementById("farmUpgradePrice").innerHTML = farmUpgradePrice;
+        document.getElementById("farmUpgrade").onclick = farmUpgrade;
+        document.getElementById("farmPotatoPerSec").innerHTML = farmPotatoPerSec; 
          
+        document.getElementById("totalV").innerHTML = totalV;
+        document.getElementById("vModEvent").onclick = vModEvent;
+        document.getElementById("vPrice").innerHTML = vPrice;
+        document.getElementById("vUpgradePrice").innerHTML = vUpgradePrice;
+        document.getElementById("vUpgrade").onclick = vUpgrade;
+        document.getElementById("vPotatoPerSec").innerHTML = vPotatoPerSec; 
         
     }
     
@@ -81,16 +148,51 @@
         
 function addOnClickPoints()
 {
-    
-    if(points == 0)
-    {
-        points = 1
+    if(getRandomInt() === 0){
+        potato_sound_1.src = 'sounds/potato_1.ogg';
+        potato_sound_1.autoplay = true;
     }
-    else
-    {
-        points++ ;
+    else if(getRandomInt() === 1){
+        potato_sound_2.src = 'sounds/potato_2.ogg';
+        potato_sound_2.autoplay = true;
     }
-    
+    else{
+        potato_sound_3.src = 'sounds/potato_3.ogg';
+        potato_sound_3.autoplay = true;
+    }
+    if(Clicker1Phase === 1){
+        potatoClick = 1 + Math.floor(addInSecond / 100);
+    }
+    if(Clicker1Phase === 2){
+        potatoClick = 1 + Math.floor(addInSecond / 100 * 5);
+    }
+    if(Clicker1Phase === 3){
+        potatoClick = 1 + Math.floor(addInSecond / 100 * 10);
+    }
+
+    if(Clicker2Phase === 1){
+        potatoClick = 1 + Math.floor(addInSecond / 100);
+    }
+    if(Clicker2Phase === 2){
+        potatoClick = 1 + Math.floor(addInSecond / 100 * 5);
+    }
+    if(Clicker2Phase === 3){
+        potatoClick = 1 + Math.floor(addInSecond / 100 * 10);
+    }
+
+    if(Clicker3Phase === 1){
+        potatoClick = 1 + Math.floor(addInSecond / 100);
+    }
+    if(Clicker3Phase === 2){
+        potatoClick = 1 + Math.floor(addInSecond / 100 * 5);
+    }
+    if(Clicker3Phase === 3){
+        potatoClick = 1 + Math.floor(addInSecond / 100 * 10);
+    }
+
+        points = points + potatoClick ;
+
+    document.getElementById("potatoClick").innerHTML = potatoClick;
     document.getElementById("points").innerHTML = points;
 }
 function hoeModEvent(){
@@ -98,6 +200,10 @@ function hoeModEvent(){
     if(points >= hoePrice)
     {
         points = points - hoePrice;
+
+        buy_sound.src = 'sounds/pop.ogg';
+        buy_sound.autoplay = true;
+
         hoePrice = hoePrice + 5;
         addInSecond = addInSecond + hoePotatoPerSec;
         totalHoes++;
@@ -112,6 +218,28 @@ function hoeModEvent(){
     document.getElementById("points").innerHTML = points;
         },1000)
     }
+    if(totalHoes >= 50 && Clicker1Phase === 0){
+        Clicker1ModPhase.setAttribute('class', 'Upgrade ShopImageText Clicker1_Phase1')
+        Clicker1Phase = 1;
+        Clicker1Value = "1%";
+        document.getElementById("Clicker1Value").innerHTML = Clicker1Value;
+        
+    }
+    if(totalHoes >= 100 && Clicker1Phase === 1){
+        Clicker1ModPhase.setAttribute('class', 'Upgrade ShopImageText Clicker1_Phase2')
+        Clicker1Phase = 2;
+        Clicker1Value = "5%";
+        document.getElementById("Clicker1Value").innerHTML = Clicker1Value;
+        
+    }
+    if(totalHoes >= 200 && Clicker1Phase === 2){
+        Clicker1ModPhase.setAttribute('class', 'Upgrade ShopImageText Clicker1_Phase3')
+        Clicker1Phase = 3;
+        Clicker1Value = "10%";
+        document.getElementById("Clicker1Value").innerHTML = Clicker1Value;
+        
+    }
+
 }
 
 function hoeUpgrade(){
@@ -120,16 +248,19 @@ function hoeUpgrade(){
         if(points >= 10000){
 
             points = points - 10000;
-
+    
+        upgrade_sound_2.src = 'sounds/upgrade_sound_2.ogg';
+        upgrade_sound_2.autoplay = true;
     hoePhaseStyle.setAttribute('class', 'ShopElem Phase3')
     hoeImageStyle.setAttribute('class', 'ShopImageText HoeImage3')
     UpgradeImageHoe.setAttribute('class', 'Upgrade ShopImageText UpgradeLast')
             
     hoePotatoPerSec = 4;
-    addInSecond = addInSecond + totalHoes * 2;
+    addInSecond = addInSecond + totalHoes * 20;
     hoePhase = 2;
     HoeUpgradePrice = 0;
 
+    document.getElementById("points").innerHTML = points;
     document.getElementById("HoeUpgradePrice").innerHTML = HoeUpgradePrice;
     document.getElementById("hoePotatoPerSec").innerHTML = hoePotatoPerSec;
     document.getElementById("addInSecond").innerHTML = addInSecond;
@@ -142,6 +273,8 @@ function hoeUpgrade(){
 
     points = points - 1000;
 
+        upgrade_sound_1.src = 'sounds/upgrade_sound_1.ogg';
+        upgrade_sound_1.autoplay = true;
     hoePhaseStyle.setAttribute('class', 'ShopElem Phase2')
     hoeImageStyle.setAttribute('class', 'ShopImageText HoeImage2')
     UpgradeImageHoe.setAttribute('class', 'Upgrade ShopImageText UpgradeDiamond')
@@ -151,6 +284,7 @@ function hoeUpgrade(){
     hoePhase = 1;
     HoeUpgradePrice = 10;
     
+    document.getElementById("points").innerHTML = points;
     document.getElementById("HoeUpgradePrice").innerHTML = HoeUpgradePrice;
     document.getElementById("hoePotatoPerSec").innerHTML = hoePotatoPerSec;
     document.getElementById("addInSecond").innerHTML = addInSecond;
@@ -163,8 +297,12 @@ function farmModEvent(){
     if(points >= farmPrice)
     {
         points = points - farmPrice;
+
+        buy_sound.src = 'sounds/pop.ogg';
+        buy_sound.autoplay = true;
+
         farmPrice = farmPrice + 25;
-        addInSecond = addInSecond + 10;
+        addInSecond = addInSecond + farmPotatoPerSec;
         totalFarms++;
         document.getElementById("totalFarms").innerHTML = totalFarms;
         document.getElementById("points").innerHTML = points;
@@ -172,11 +310,177 @@ function farmModEvent(){
         document.getElementById("addInSecond").innerHTML = addInSecond;
     setInterval(function()
         {
-    points = points + 10;
+    points = points + farmPotatoPerSec;
     
     document.getElementById("points").innerHTML = points;
         },1000)
+    }
+    if(totalFarms >= 50 && Clicker2Phase === 0){
+        Clicker2ModPhase.setAttribute('class', 'Upgrade ShopImageText Clicker2_Phase1')
+        Clicker2Phase = 1;
+        Clicker2Value = "1%";
+        document.getElementById("Clicker2Value").innerHTML = Clicker2Value;
+        
+    }
+    if(totalFarms >= 100 && Clicker2Phase === 1){
+        Clicker2ModPhase.setAttribute('class', 'Upgrade ShopImageText Clicker2_Phase2')
+        Clicker2Phase = 2;
+        Clicker2Value = "5%";
+        document.getElementById("Clicker2Value").innerHTML = Clicker2Value;
+        
+    }
+    if(totalFarms >= 200 && Clicker2Phase === 2){
+        Clicker2ModPhase.setAttribute('class', 'Upgrade ShopImageText Clicker2_Phase3')
+        Clicker2Phase = 3;
+        Clicker2Value = "10%";
+        document.getElementById("Clicker2Value").innerHTML = Clicker2Value;
+        
     }   
+}
+    function farmUpgrade(){
+        if(farmPhase === 1){
+        if(points >= 100000){
+
+            points = points - 100000;
+
+        upgrade_sound_2.src = 'sounds/upgrade_sound_2.ogg';
+        upgrade_sound_2.autoplay = true;
+    farmPhaseStyle.setAttribute('class', 'ShopElem Phase3')
+    farmImageStyle.setAttribute('class', 'ShopImageText FarmImage3')
+    UpgradeImageFarm.setAttribute('class', 'Upgrade ShopImageText UpgradeLast')
+            
+    farmPotatoPerSec = 40;
+    addInSecond = addInSecond + totalFarms * 20;
+    farmPhase = 2;
+    farmUpgradePrice = 0;
+
+    document.getElementById("points").innerHTML = points;
+    document.getElementById("farmUpgradePrice").innerHTML = farmUpgradePrice;
+    document.getElementById("farmPotatoPerSec").innerHTML = farmPotatoPerSec;
+    document.getElementById("addInSecond").innerHTML = addInSecond;
+        }
+    }
+
+    // тут типа 1 апгрейд, но уже у фермы
+    if(farmPhase === 0){ 
+    if(points >= 10000){
+
+    points = points - 10000;
+
+        upgrade_sound_1.src = 'sounds/upgrade_sound_1.ogg';
+        upgrade_sound_1.autoplay = true;
+    farmPhaseStyle.setAttribute('class', 'ShopElem Phase2')
+    farmImageStyle.setAttribute('class', 'ShopImageText FarmImage2')
+    UpgradeImageFarm.setAttribute('class', 'Upgrade ShopImageText UpgradeDiamond')
+
+    farmPotatoPerSec = 20;
+    addInSecond = addInSecond + totalFarms * 10;
+    farmPhase = 1;
+    farmUpgradePrice = 100;
+    
+    document.getElementById("points").innerHTML = points;
+    document.getElementById("farmUpgradePrice").innerHTML = farmUpgradePrice;
+    document.getElementById("farmPotatoPerSec").innerHTML = farmPotatoPerSec;
+    document.getElementById("addInSecond").innerHTML = addInSecond;
+    }
+    }
+    }
+    // Виталик
+    function vModEvent(){
+    
+    if(points >= vPrice)
+    {
+        points = points - vPrice;
+
+        buy_sound.src = 'sounds/pop.ogg';
+        buy_sound.autoplay = true;
+
+        vPrice = vPrice + 250;
+        addInSecond = addInSecond + vPotatoPerSec;
+        totalV++;
+        document.getElementById("totalV").innerHTML = totalV;
+        document.getElementById("points").innerHTML = points;
+        document.getElementById("vPrice").innerHTML = vPrice;
+        document.getElementById("addInSecond").innerHTML = addInSecond;
+    setInterval(function()
+        {
+    points = points + vPotatoPerSec;
+    
+    document.getElementById("points").innerHTML = points;
+        },1000)
+    }
+
+
+    if(totalV >= 50 && Clicker3Phase === 0){
+        Clicker3ModPhase.setAttribute('class', 'Upgrade ShopImageText Clicker3_Phase1')
+        Clicker3Phase = 1;
+        Clicker3Value = "1%";
+        document.getElementById("Clicker3Value").innerHTML = Clicker3Value;
+        
+    }
+    if(totalV >= 100 && Clicker3Phase === 1){
+        Clicker3ModPhase.setAttribute('class', 'Upgrade ShopImageText Clicker3_Phase2')
+        Clicker3Phase = 2;
+        Clicker3Value = "5%";
+        document.getElementById("Clicker3Value").innerHTML = Clicker3Value;
+        
+    }
+    if(totalV >= 200 && Clicker3Phase === 2){
+        Clicker3ModPhase.setAttribute('class', 'Upgrade ShopImageText Clicker3_Phase3')
+        Clicker3Phase = 3;
+        Clicker3Value = "10%";
+        document.getElementById("Clicker3Value").innerHTML = Clicker3Value;
+        
+    }
+
+}
+function vUpgrade(){
+        if(vPhase === 1){
+        if(points >= 1000000){
+
+            points = points - 100000;
+
+        upgrade_sound_2.src = 'sounds/upgrade_sound_2.ogg';
+        upgrade_sound_2.autoplay = true;
+    vPhaseStyle.setAttribute('class', 'ShopElem Phase3')
+    vImageStyle.setAttribute('class', 'ShopImageText vImage3')
+    UpgradeImageV.setAttribute('class', 'Upgrade ShopImageText UpgradeLast')
+            
+    vPotatoPerSec = 400;
+    addInSecond = addInSecond + totalV * 200;
+    vPhase = 2;
+    vUpgradePrice = 0;
+
+    document.getElementById("points").innerHTML = points;
+    document.getElementById("vUpgradePrice").innerHTML = vUpgradePrice;
+    document.getElementById("vPotatoPerSec").innerHTML = vPotatoPerSec;
+    document.getElementById("addInSecond").innerHTML = addInSecond;
+        }
+    }
+
+    // тут типа 1 но уже у Виталика
+    if(vPhase === 0){ 
+    if(points >= 100000){
+
+    points = points - 100000;
+
+        upgrade_sound_1.src = 'sounds/upgrade_sound_1.ogg';
+        upgrade_sound_1.autoplay = true;
+    vPhaseStyle.setAttribute('class', 'ShopElem Phase2')
+    vImageStyle.setAttribute('class', 'ShopImageText vImage2')
+    UpgradeImageV.setAttribute('class', 'Upgrade ShopImageText UpgradeDiamond')
+
+    vPotatoPerSec = 200;
+    addInSecond = addInSecond + totalV * 100;
+    vPhase = 1;
+    vUpgradePrice = 1000;
+    
+    document.getElementById("points").innerHTML = points;
+    document.getElementById("vUpgradePrice").innerHTML = vUpgradePrice;
+    document.getElementById("vPotatoPerSec").innerHTML = vPotatoPerSec;
+    document.getElementById("addInSecond").innerHTML = addInSecond;
+    }
+    }
 }
     </script>
 </html>

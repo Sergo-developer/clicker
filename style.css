@@ -33,11 +33,17 @@ h3{
     height: 210px;
     transition-duration: 0.5s;
 }
+.MainImage:active{
+    width: 228px;
+    height: 190px;
+    transition-duration: 0.1s;
+    transform: rotate(9deg);
+}
 
 .ClickerBase {
     display: flex;
     width: auto;
-    max-height: 190px;
+    height: 250px;
     align-content: space-between;
     margin-bottom: 20px;
 }
@@ -48,9 +54,10 @@ h3{
 }
 
 .ShopBase{
-    padding-top: 10%;
     display: grid;
     gap: 10px; 
+    background-image: url(img/spruce_planks.png);
+    width: 100%;
 }
 
 .UpgradeWrapper{
@@ -62,7 +69,17 @@ h3{
     height: auto;
     text-align: center;
 }
+.ClickPoints{
+    background-image: url(img/spruce_log.png);
+    color: white;
+    text-align: center;
+    text-shadow: black 0 0 10px;
+    height: 40px;
+    font-size: 20;
+    user-select: none;
+}
 .ShopElem{
+    margin-left: 10px;
     user-select: none;
     border: 5px solid;
     border-color: #584d3b; 
@@ -85,6 +102,42 @@ h3{
 .ShopLable{
     display: grid;
     text-align: center;
+}
+.Clicker1_Phase0{
+    background-image: url(img/disable_shovel.png)
+}
+.Clicker2_Phase0{
+    background-image: url(img/disable_bone_meal.png)
+}
+.Clicker3_Phase0{
+    background-image: url(img/disable_potato_reaper.png);
+}
+.Clicker1_Phase1{
+    background-image: url(img/wooden_shovel.png)
+}
+.Clicker2_Phase1{
+    background-image: url(img/bone_meal.png)
+}
+.Clicker3_Phase1{
+    background-image: url(img/potato_reaper.png);
+}
+.Clicker1_Phase2{
+    background-image: url(img/iron_shovel.png)
+}
+.Clicker2_Phase2{
+    background-image: url(img/fertilizer.png)
+}
+.Clicker3_Phase2{
+    background-image: url(img/iron_potato_reaper.png);
+}
+.Clicker1_Phase3{
+    background-image: url(img/diamond_shovel.png)
+}
+.Clicker2_Phase3{
+    background-image: url(img/fertilizer_2.png)
+}
+.Clicker3_Phase3{
+    background-image: url(img/diamond_potato_reaper.png);
 }
 .Phase1{
     background-image: url(img/stripped_oak_log.png)
@@ -117,7 +170,33 @@ h3{
     height: 100px;
     width: 100px;
 }
+.FarmImage2{
+    background-image: url(img/farm_iron.png);
+    height: 100px;
+    width: 100px;
+}
+.FarmImage3{
+    background-image: url(img/diamond_iron.png);
+    height: 100px;
+    width: 100px;
+}
+.vImage{
+    background-image: url(img/vitaly.png);
+    height: 100px;
+    width: 100px;
+}
+.vImage2{
+    background-image: url(img/vitaly_1.png);
+    height: 100px;
+    width: 100px;
+}
+.vImage3{
+    background-image: url(img/vitaly_2.png);
+    height: 100px;
+    width: 100px;
+}
 .Upgrade{
+    margin-left: 10px;
     border: 5px solid;
     border-color: #584d3b; 
     height: 100px;
